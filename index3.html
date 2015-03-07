@@ -27,19 +27,7 @@
   }
 
   function pageRankSize(node, nodes) {
-    linked_to = 0;
-    _.each(nodes, function(targets, source) {
-      _.each(targets, function(target){
-        if(target == node) {
-          linked_to++;
-        }
-      });
-    });
-
-
-
-    // return Math.pow(4, nodes[node].length) + min_size;
-    return Math.pow(2.5, linked_to) + min_size;
+    return Math.pow(4, nodes[node].length) + min_size;
   }
 
   function build_nodes(nodes, size_it) {
@@ -47,6 +35,8 @@
     var nodes = _.map(nodes, function(val, key) {
       if(size_it){
         size = pageRankSize(key, nodes)
+        // console.log(pageRankSize(key, nodes))
+        // console.log(size)
       }
       return { "name": key, "size": size };
     });
@@ -57,7 +47,7 @@
   function build_connections(nodes) {
     var connections = [];
     _.each(nodes, function(targets, source) {
-      _.each(targets, function(target){
+      var links = _.each(targets, function(target){
         connections.push({"source": source, "target": target});
       });
     });
@@ -94,6 +84,22 @@
     .id("name")         // key for which our data is unique on
     .draw()             // finally, draw the visualization!
 
+
+  // After 2 seconds, add another node and connection!
+  setTimeout(function(){
+//     //add(visualization, nodes, connections, "name", "gamma")
+//     sized_data.push({"name": "newone", "size": 24})
+//     positions.push({"name": "newone", "x": 24, "y": 40})
+//     // connections.push({"source": "newone", "target": "alpha"})
+//     console.log('apply ranking')
+//     visualization
+//       .data(sized_data)
+// //      .nodes(positions)
+//       // .edges(connections)
+//       // .edges({arrows: true})
+//       .draw()
+
+  },1300)
   var size_it = true;
   window.onclick = function(){
     sized_data = build_nodes(nodes, size_it);

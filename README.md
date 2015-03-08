@@ -23,6 +23,16 @@ There is a variable `nodes` in `index.html` which holds the nodes (webpages) in 
   'c': ['b']
 }
 ```
-I have choosen this formate as it is easy for me to understand what the resulting graph will look like.  And it is easy to translate a hand drawn graph to this format.  A lot easier then typing out a matrix.
+I have choosen this format as it is easy for me to understand what the resulting graph will look like.  And it is easy to translate a hand drawn graph to this format.  A lot easier then typing out a matrix.
 
 There is a helper class `Nodes` which can represent this hash as a matrix for the required linear algebra and various structures which are required by d3plus to assit in rendering the network.
+
+## Using
+
+To use just represent your graph in the `nodes` variable described above and load the index.html page.  Clicking on any whitespace in the page will show the page ranking of each "site" (node) as a relitive size.
+
+So each node will adjust its size based on its ranking according to the simplified implementation of the page rank algorithm.
+
+## Page ranking
+
+The page rank algorithm has been implemented in the `lib/pagerank.js` file.

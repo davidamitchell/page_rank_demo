@@ -44,8 +44,6 @@ function pageRankSize(node, nodes, ranking) {
 
   keys = _.keys(nodes);
   x = _.indexOf(keys, node);
-  console.log(x, keys, node);
-  console.log(ranking[0]);
   rank = ranking[x];
 
   return (rank*100) + min_size;

@@ -35,4 +35,15 @@ So each node will adjust its size based on its ranking according to the simplifi
 
 ## Page ranking
 
-The page rank algorithm has been implemented in the `lib/pagerank.js` file.
+The page rank algorithm has been implemented in the `lib/pagerank.js` file.  Most of the implementation logic has been grabbed from an archived copy of this [page](http://williamcotton.com/pagerank-explained-with-javascript) and follows what is described in the original [PageRank paper](http://ilpubs.stanford.edu:8090/422/1/1999-66.pdf) as described in section 2.4.
+
+## Interesting points
+
+* eigenvector:
+ A vector of a matrix which when multiplied to said matrix yeilds a vector pointing in the same dirction as the origin vector
+* eigenvalue:
+ The difference in size of this resulting vector to the original
+* adjacency matrix
+ A way of represeting a dirctionally linked network in a matrix
+* damping factor
+ The factor by which all nodes probablity of being reached in increased.  It is used to ensure that a link hole is not reached and that all pages are reached. If the damping factor is .85 (as it was originally set) the there is a 15% chance to not follow any links of the current page and instead go to visit a random page (node).

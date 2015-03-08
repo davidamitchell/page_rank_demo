@@ -8,9 +8,8 @@
 <script src="lib/pagerank.js"></script>
 <script src="lib/nodes.js"></script>
 
-<!-- create container element for visualization -->
+<button id="rank_um">rank um</button>
 <div id="viz"></div>
-
 <script>
 
 var min_size = 20;
@@ -26,10 +25,12 @@ var min_size = 20;
 // };
 
 var nodes = {
-  zero:   ['one'],
-  one:    ['two'],
+  zero:   ['one','four'],
+  one:    ['two','four'],
   two:    ['zero','one'],
-  three:  ['zero','one']
+  three:  ['zero','one'],
+  four:   [],
+  five:   ['four']
 };
 
 var n = new Nodes(nodes, _);
@@ -49,4 +50,68 @@ visualization
 .id("name")
 .draw()
 
+var matrix   = Matrix.create( n.matrix() );
+var rankings = matrix.pagerank( 0.85 );
+
+console.log(rankings)
+
+var size_it = true;
+var rank_um = document.getElementById("rank_um");
+rank_um.addEventListener('click',rankum,false);
+
+function rankum(){
+  if( size_it ) {
+    node_data = n.d3_ranked_nodes(rankings);
+    this.innerHTML = "un-rank"
+  } else {
+    node_data = n.d3_nodes(rankings);
+    this.innerHTML = "rank um"
+  }
+  node_data.push({"name": "newone", "size": 10})
+
+  visualization
+  .data(node_data)
+  .draw()
+
+  size_it = !size_it
+
+}
+
 </script>
+
+<style>
+textarea {
+	width: 600px;
+	height: 120px;
+	border: 2px solid #cccccc;
+	padding: 5px;
+  border-radius: 5px;
+}
+#rank_um, #rank_um:active {
+  border: none;
+  margin-bottom: 9px;
+  margin-top: 9px;
+  cursor: pointer;
+  width: 180px;
+
+  text-decoration: none;
+  -webkit-transition: all .1s ease-in-out;
+  transition: all .1s ease-in-out;
+  font-family: wf_segoe-ui_light,"Segoe UI Light","Segoe WP Light","Segoe UI","Segoe WP",Tahoma,Arial,sans-serif;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1.2em;
+  color: #fff;
+  background-color: #00abec;
+  display: inline-block;
+  padding: 6px 20px 9px;
+  text-align: center;
+  vertical-align: bottom;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+  outline: none;
+
+}
+</style>

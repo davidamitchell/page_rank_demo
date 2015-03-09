@@ -40,6 +40,26 @@ var dg = new DirectedGraph( nodes, _ );
 var matrix         = Matrix.create( dg.matrix() );
 var page_rank      = new PageRank( _ );
 
+
+var rankings_formula = page_rank.rank( dg, 0.85 );
+console.log( 'rankings from formula: ', rankings_formula )
+console.log( 'normalised: ', _.reduce( rankings_formula, function(memo, num){ return memo + num; }, 0))
+
+var rankings_matrix = page_rank.rank_with_matrix( matrix, 0.85 );
+console.log( 'rankings from matrix: ', rankings_matrix )
+console.log( 'normalised: ', _.reduce( rankings_matrix, function(memo, num){ return memo + num; }, 0))
+
+var total_divergence = 0.0;
+_.times( rankings_matrix.length, function(n){
+  total_divergence += Math.abs( rankings_matrix[n] - rankings_formula[n] )
+});
+console.log( 'total difference: ', total_divergence )
+
+var divergence = _.map( rankings_matrix, function( node, n ) {
+  return Math.abs( rankings_matrix[n] - rankings_formula[n] )
+});
+console.log( 'divergence: ', divergence )
+
 var node_data       = dg.d3_nodes();
 var connections     = dg.d3_connections();
 var visualization   = d3plus.viz()
@@ -67,7 +87,7 @@ function rankum( e ){
     if( e.target.id == 'formula_rank' ) {
       var rankings = page_rank.rank( dg, 0.85 );
 
-      console.log( 'rankings: ', rankings )
+      console.log( 'rankings from formula: ', rankings )
       console.log( 'normalised: ', _.reduce( rankings, function(memo, num){ return memo + num; }, 0))
 
       node_data = dg.d3_ranked_nodes( rankings );
@@ -77,7 +97,7 @@ function rankum( e ){
     if( e.target.id == 'matrix_rank' ) {
       var rankings = page_rank.rank_with_matrix( matrix, 0.85 );
 
-      console.log( 'rankings: ', rankings )
+      console.log( 'rankings from matrix: ', rankings )
       console.log( 'normalised: ', _.reduce( rankings, function(memo, num){ return memo + num; }, 0))
 
       node_data = dg.d3_ranked_nodes( rankings );
@@ -101,10 +121,10 @@ function rankum( e ){
 
 <style>
 textarea {
-	width: 600px;
-	height: 120px;
-	border: 2px solid #cccccc;
-	padding: 5px;
+  width: 600px;
+  height: 120px;
+  border: 2px solid #cccccc;
+  padding: 5px;
   border-radius: 5px;
 }
 .ranking, .ranking:active {

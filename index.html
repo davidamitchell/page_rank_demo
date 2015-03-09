@@ -8,8 +8,10 @@
 <script src="lib/directed_graph.js"></script>
 <script src="lib/pagerank.js"></script>
 
-<button id="rank_um">rank um</button>
+<button class="ranking" id="matrix_rank">by matrix</button>
+<button class="ranking" id="formula_rank">by formula</button>
 <div id="viz"></div>
+
 <script>
 
 var min_size = 20;
@@ -37,14 +39,6 @@ var dg = new DirectedGraph( nodes, _ );
 
 var matrix         = Matrix.create( dg.matrix() );
 var page_rank      = new PageRank( _ );
-var page_rankings  = page_rank.rank_with_matrix( matrix, 0.85 )
-
-console.log( 'rankngs: ',page_rankings )
-console.log( 'normalised: ', _.reduce(page_rankings, function(memo, num){ return memo + num; }, 0))
-
-var page_rankings  = page_rank.rank( dg, 0.85 )
-console.log( 'rankngs: ',page_rankings )
-console.log( 'normalised: ', _.reduce(page_rankings, function(memo, num){ return memo + num; }, 0))
 
 var node_data       = dg.d3_nodes();
 var connections     = dg.d3_connections();
@@ -60,25 +54,46 @@ visualization
 .id("name")
 .draw()
 
-var size_it = true;
-var rank_um = document.getElementById( "rank_um" );
-rank_um.addEventListener( 'click', rankum, false );
+var matrix_rank = document.getElementById( "matrix_rank" );
+var formula_rank = document.getElementById( "formula_rank" );
 
-function rankum(){
-  if( size_it ) {
-    node_data = dg.d3_ranked_nodes( page_rankings );
-    this.innerHTML = "un-rank"
+matrix_rank.addEventListener( 'click', rankum, false );
+formula_rank.addEventListener( 'click', rankum, false );
+
+function rankum( e ){
+
+  if( e.target.innerHTML != "un-rank" ) {
+
+    if( e.target.id == 'formula_rank' ) {
+      var rankings = page_rank.rank( dg, 0.85 );
+
+      console.log( 'rankings: ', rankings )
+      console.log( 'normalised: ', _.reduce( rankings, function(memo, num){ return memo + num; }, 0))
+
+      node_data = dg.d3_ranked_nodes( rankings );
+      this.innerHTML = "un-rank"
+    }
+
+    if( e.target.id == 'matrix_rank' ) {
+      var rankings = page_rank.rank_with_matrix( matrix, 0.85 );
+
+      console.log( 'rankings: ', rankings )
+      console.log( 'normalised: ', _.reduce( rankings, function(memo, num){ return memo + num; }, 0))
+
+      node_data = dg.d3_ranked_nodes( rankings );
+      this.innerHTML = "un-rank"
+    }
+
   } else {
-    node_data = dg.d3_nodes( page_rankings );
-    this.innerHTML = "rank um"
+    node_data = dg.d3_nodes( );
+    matrix_rank.innerHTML  = "by matrix"
+    formula_rank.innerHTML = "by formula"
   }
   node_data.push( { "name": "newone", "size": 10 } )
 
   visualization
   .data(node_data)
   .draw()
-
-  size_it = !size_it
 
 }
 
@@ -92,7 +107,7 @@ textarea {
 	padding: 5px;
   border-radius: 5px;
 }
-#rank_um, #rank_um:active {
+.ranking, .ranking:active {
   border: none;
   margin-bottom: 9px;
   margin-top: 9px;
@@ -114,9 +129,15 @@ textarea {
   vertical-align: bottom;
   position: absolute;
   top: 20px;
-  left: 20px;
   z-index: 1000;
   outline: none;
 
+}
+
+#matrix_rank {
+  left: 20px;
+}
+#formula_rank {
+  right: 20px;
 }
 </style>

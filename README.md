@@ -4,6 +4,33 @@ Hope to be able to demo the google page rank algorithim implemented in javascrip
 
 This will be a simple demo.
 
+## Talking points
+
+### History
+* Back in 1998
+ * "search engines" were just directories
+ * human currated
+ * missing information
+ * non authoritative
+* Missing the ability to search
+* Have ranked by authority
+
+* Page and Brin noticed that Citation noting was a way to define authority
+* How would this work on the web
+* Not just a simple matter of counting links to a page
+ * must also consider the "authority" of those pages which link to this page
+ * this is because of "spam"
+ * example:
+  * Car insurance companys listed on a link farm
+  * Insurance company "Bobs insurance" is linked to from "Jims cars" car sales site
+  * "Jims cars" is linked to from a number of forums
+  * Bobs insurance would have a higher "authority" because of Jims cars being considered "authoritative"
+
+* have to take into consideration "link pools" (dead ends)
+ * dealt with by giving all sites a 'damping value' which is the kind of like a random surfer who clicks around
+* simple algorithm
+ * PR(A) = (1-d) + d * (PR(T1) / C(T1) + ... + PR(Tn) / C(Tn))
+
 
 ## Setup
 

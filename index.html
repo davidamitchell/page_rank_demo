@@ -29,10 +29,11 @@ var min_size = 20;
 var nodes = {
   zero:   ['one','four'],
   one:    ['two','four'],
-  two:    ['zero','one'],
+  two:    ['zero','one','six'],
   three:  ['zero','one'],
   four:   [],
-  five:   ['four']
+  five:   ['four'],
+  six:    [],
 };
 
 var dg = new DirectedGraph( nodes, _ );
@@ -84,24 +85,29 @@ function rankum( e ){
 
   if( e.target.innerHTML != "un-rank" ) {
 
+    matrix_rank.innerHTML  = "by matrix"
+    formula_rank.innerHTML = "by formula"
+
     if( e.target.id == 'formula_rank' ) {
+      this.innerHTML = "un-rank"
+
       var rankings = page_rank.rank( dg, 0.85 );
 
       console.log( 'rankings from formula: ', rankings )
       console.log( 'normalised: ', _.reduce( rankings, function(memo, num){ return memo + num; }, 0))
 
       node_data = dg.d3_ranked_nodes( rankings );
-      this.innerHTML = "un-rank"
     }
 
     if( e.target.id == 'matrix_rank' ) {
+      this.innerHTML = "un-rank"
+
       var rankings = page_rank.rank_with_matrix( matrix, 0.85 );
 
       console.log( 'rankings from matrix: ', rankings )
       console.log( 'normalised: ', _.reduce( rankings, function(memo, num){ return memo + num; }, 0))
 
       node_data = dg.d3_ranked_nodes( rankings );
-      this.innerHTML = "un-rank"
     }
 
   } else {
